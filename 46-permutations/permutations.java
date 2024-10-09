@@ -20,8 +20,7 @@ class Solution {
                     remaining[index_remaining++] = nums[j];
                 }
             }
-            List<List<Integer>> perms = new ArrayList<>();
-            perms = permute(remaining);
+            List<List<Integer>> perms = permute(remaining);
 
             for(List<Integer> perm : perms){
                 perm.add(nums[i]);
