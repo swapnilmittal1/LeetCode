@@ -14,40 +14,39 @@
  * }
  */
 class Solution {
-    List<List<Integer>> list = new ArrayList<>();
-
     public List<List<Integer>> levelOrder(TreeNode root) {
-    if(root == null) {
+        List<List<Integer>> list = new ArrayList<>();
+        Deque<TreeNode> tempList = new ArrayDeque<>();
+
+        if(root != null){
+            tempList.add(root);
+            
+        }
+
+
+        while(!tempList.isEmpty()){
+            List<Integer> levelList = new ArrayList<>();
+
+            for(int i = 0, level = tempList.size(); i< level; i++ ){
+                TreeNode tempNode = tempList.poll();
+
+                levelList.add(tempNode.val);
+
+                if(tempNode.left != null){
+                    tempList.add(tempNode.left);
+                }
+
+                if(tempNode.right != null){
+                tempList.add(tempNode.right);}
+
+            }
+            list.add(levelList);
+
+        }
+
         return list;
-    }
-    helper(root,0);
-    return list;
-    
+
+
 
     }
-    void helper(TreeNode root, int level) {
-        if(list.size() == level){
-            List<Integer> arr = new ArrayList<>();
-            arr.add(root.val);
-            list.add(arr);
-        } else {
-            list.get(level).add(root.val);
-        }
-
-        if(root.left == null && root.right == null ) {
-            return;
-        }
-        
-        if(root.left != null){
-            helper(root.left, level +1);
-        }
-
-        if(root.right != null){
-            helper(root.right, level +1 );
-        }
-    }
-
-
-
-
 }
