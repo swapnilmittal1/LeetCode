@@ -1,32 +1,25 @@
-
-
 class Solution {
     public int[] topKFrequent(int[] nums, int k) {
+        Map<Integer,Integer> map = new HashMap<>();
 
-        // Create a HashMap to count the frequency of each element in the array
-        Map<Integer, Integer> map = new HashMap<>();
-
-        for (int num : nums) {
-            map.put(num, map.getOrDefault(num, 0) + 1);
+        for(int i = 0; i < nums.length;i++){
+            map.put(nums[i], map.getOrDefault(nums[i], 0) + 1);
         }
 
-        // Create a priority queue (min-heap) to keep the top k frequent elements
-        PriorityQueue<Map.Entry<Integer, Integer>> queue = new PriorityQueue<>((e1, e2) -> e1.getValue() - e2.getValue());
+        List<int[]> list = new ArrayList<>();
 
-        // Iterate over the map's entry set and maintain the size of the heap to k
-        for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
-            queue.offer(entry);
-            if (queue.size() > k) {
-                queue.poll();
-            }
+        for(Map.Entry<Integer,Integer> entry : map.entrySet()) {
+            list.add(new int[]{entry.getValue(),entry.getKey()});
+
+        }
+        list.sort((a,b) -> b[0] - a[0]);
+        int[] res = new int[k];
+
+        for(int i = 0; i < k; i++){
+            res[i] = list.get(i)[1];
         }
 
-        // Create an array to store the result
-        int[] result = new int[k];
-        for (int i = k - 1; i >= 0; i--) {
-            result[i] = queue.poll().getKey();
-        }
+        return res;
 
-        return result;
     }
 }
