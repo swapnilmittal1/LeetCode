@@ -15,6 +15,8 @@ class Solution {
                     return false;
                 count.put(i, count.get(i) - 1);
                 if (count.get(i) == 0) {
+                    if (i != minH.peek())
+                        return false;
                     minH.poll();
                 }
             }
