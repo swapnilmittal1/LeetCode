@@ -34,8 +34,9 @@ class Solution {
         TreeNode root = new TreeNode(preorder[index]);
         int mid = map.get(preorder[index]);
 
+
         root.left = helper(preorder, left, mid - 1);
-        root.right = helper(preorder, mid + 1, right);
+                root.right = helper(preorder, mid + 1, right);
 
         return root;
 
