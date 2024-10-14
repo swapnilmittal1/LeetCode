@@ -7,16 +7,11 @@ class Solution {
             slow = nums[slow];
             fast = nums[nums[fast]];
         }
-
         fast = nums[0];
-        while(slow != fast) {
+        while(slow != fast ){
             slow = nums[slow];
             fast = nums[fast];
-
         }
-        return slow;
-
-        
-        
+        return fast;
     }
 }
