@@ -13,21 +13,21 @@ public class Solution {
 
     public boolean hasCycle(ListNode head) {
 
-        HashMap<ListNode, Integer> map = new HashMap<>();
+        HashSet<ListNode> set = new HashSet<>();
         ListNode curr = head;
 
-        if(head == null || head.next == null) {
+        if (head == null || head.next == null) {
             return false;
         } 
 
-        while(curr.next != null) {
-            if(! map.containsKey(curr.next)) {
-                map.put(curr.next, curr.next.val);
+        while (curr != null) {
+            if (!set.contains(curr)) {
+                set.add(curr);
                 curr = curr.next;
             } else {
-                return true;
+                return true;  // Cycle detected
             }
         }
-        return false;
+        return false;  // No cycle found
     }
 }
