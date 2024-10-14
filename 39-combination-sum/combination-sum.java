@@ -16,12 +16,13 @@ class Solution {
             return;
         }
 
-        helper(candidates, i + 1, sum, target);
 
         list.add(candidates[i]);
         helper(candidates, i, sum + candidates[i], target);
+                list.remove(list.size() - 1);
 
-        list.remove(list.size() - 1);
+        helper(candidates, i + 1, sum, target);
+
 
     }
 }
