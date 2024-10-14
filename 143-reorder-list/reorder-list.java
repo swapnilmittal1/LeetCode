@@ -15,7 +15,7 @@ class Solution {
         } 
         ListNode lastNode = head;
 
-        while(lastNode.next != null && lastNode.next.next != null){
+        while( lastNode.next.next != null){
             lastNode = lastNode.next;
         }
 
