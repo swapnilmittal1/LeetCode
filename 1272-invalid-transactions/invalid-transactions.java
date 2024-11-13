@@ -1,68 +1,57 @@
 class Solution {
+	// store transaction in an object for ease of handling and cleaner code
     class Transaction{
         String name;
         int time;
         int amount;
         String city;
-        String original;
-        int index;
-        public Transaction(String string, int idx){
-            String[] arr = string.split(",");
-            name = arr[0];
-            time = Integer.parseInt(arr[1]);
-            amount = Integer.parseInt(arr[2]);
-            city = arr[3];
-            original = string;
-            index = idx;
+        public Transaction(String line){
+			// split the string and parse it
+            String[] split = line.split(",");
+            name = split[0];
+            time = Integer.parseInt(split[1]);
+            amount = Integer.parseInt(split[2]);
+            city = split[3];
         }
     }
-
     public List<String> invalidTransactions(String[] transactions) {
-        int n = transactions.length;
-        Transaction[] trans = new Transaction[n];
-        for (int i = 0; i < n; i++) {
-            trans[i] = new Transaction(transactions[i], i);
+        List<String> invalid = new ArrayList<>();
+        Map<String, List<Transaction>> map = new HashMap<>();
+		// go through entire transaction list and create object and store in map using 'name' as key
+        for(String transaction : transactions){
+            Transaction t = new Transaction(transaction);
+            map.putIfAbsent(t.name, new ArrayList<>());
+            map.get(t.name).add(t);
         }
-
-        boolean[] invalid = new boolean[n];
-
-        // Check for amount exceeding 1000
-        for (int i = 0; i < n; i++) {
-            if (trans[i].amount > 1000) {
-                invalid[i] = true;
+		// now go through the transaction list again and 
+		// compare each transaction to the respective list for that name
+        for(String transaction : transactions){
+            Transaction t = new Transaction(transaction);
+			// if transaction is not valid, add to final result
+			// (notice we are passing to the function only the list of transactions for that specific name
+			// we only care about transactions for the same name)
+            if(!isValid(t, map.getOrDefault(t.name, new ArrayList<>()))){
+                invalid.add(transaction);
             }
         }
-
-        // Group transactions by name
-        Map<String, List<Transaction>> nameToTrans = new HashMap<>();
-        for (Transaction t : trans) {
-            nameToTrans.computeIfAbsent(t.name, k -> new ArrayList<>()).add(t);
+        return invalid;
+    }
+    public boolean isValid(Transaction t, List<Transaction> list){
+		// if the transaction is greater than 1000, 
+		/// we hit the first condition in the description so return the transaction as false
+        if(t.amount > 1000){
+			return false;
+		}
+		// go through the list for that name
+		// see if the time of the transaction is less than or equal to 60
+		// and if the transaction is not in the same city
+		// we hit the second condition return the transaction as false
+        for(Transaction ta : list){
+            if(Math.abs(ta.time - t.time) <= 60 && !ta.city.equals(t.city)){
+				return false;
+			}
         }
-
-        // Check for invalid transactions based on time and city
-        for (List<Transaction> list : nameToTrans.values()) {
-            int size = list.size();
-            for (int i = 0; i < size; i++) {
-                Transaction t1 = list.get(i);
-                for (int j = 0; j < size; j++) {
-                    if (i == j) continue;
-                    Transaction t2 = list.get(j);
-                    if (Math.abs(t1.time - t2.time) <= 60 && !t1.city.equals(t2.city)) {
-                        invalid[t1.index] = true;
-                        invalid[t2.index] = true;
-                    }
-                }
-            }
-        }
-
-        // Collect invalid transactions
-        List<String> result = new ArrayList<>();
-        for (int i = 0; i < n; i++) {
-            if (invalid[i]) {
-                result.add(trans[i].original);
-            }
-        }
-
-        return result;
+		// if we go through the entire list and we don't hit any condition, then the transaction is true
+        return true;
     }
 }
