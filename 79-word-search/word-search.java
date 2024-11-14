@@ -1,37 +1,34 @@
 class Solution {
+    boolean[][] visited;
     public boolean exist(char[][] board, String word) {
-        
-        int r = board.length;
-        int c = board[0].length;
-
-        boolean[][] visited = new boolean[r][c];
-
-        for(int i = 0; i < r; i++){
-            for(int j = 0; j < c; j++){
-                if(helper(i,j,board,word,visited,0)){
+        visited = new boolean[board.length][board[0].length];
+        for(int i = 0; i < board.length; i++){
+            for(int j = 0; j < board[0].length; j++){
+                if(dfs(board, i, j, 0, word)){
+                    visited[i][j] = false;
                     return true;
                 }
             }
         }
         return false;
-    }
 
-    boolean helper(int r, int c, char[][] board, String word, boolean[][] visited, int i) {
-        if(word.length() == i) {
+    }
+    boolean dfs(char[][] board, int r, int c, int index, String word){
+        if(word.length() == index){
             return true;
         }
-
-        if(r < 0 || c < 0 || r >= board.length || c >= board[0].length || visited[r][c] || board[r][c] != word.charAt(i)){
+        if(r < 0 || c < 0 || r == board.length || c == board[0].length || board[r][c] != word.charAt(index)|| visited[r][c]){
             return false;
         }
-
         visited[r][c] = true;
 
-        if(helper(r + 1, c, board, word, visited, i + 1) || helper(r - 1, c, board, word, visited, i + 1) || helper(r, c + 1, board, word, visited, i + 1) || helper(r, c - 1, board, word, visited, i + 1)) {
+        if(dfs(board, r + 1, c, index + 1, word) || dfs(board, r - 1, c, index + 1, word) || dfs(board, r , c + 1, index + 1, word) || dfs(board, r , c - 1, index + 1, word)){
             return true;
         }
-
         visited[r][c] = false;
         return false;
+
+
     }
+
 }
