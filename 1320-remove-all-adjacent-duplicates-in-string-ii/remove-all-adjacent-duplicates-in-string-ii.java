@@ -6,7 +6,7 @@ class Solution {
 
         for(char c : s.toCharArray()) {
             if(!charS.isEmpty() && c == charS.peek()){
-                intS.push(intS.peek() + 1);
+                intS.push(intS.pop() + 1);
             } else {
                 intS.push(1);
             }
@@ -15,8 +15,9 @@ class Solution {
             if(intS.peek() == k){
                 for(int i = 0; i < k; i++){
                     charS.pop();
-                    intS.pop();
                 }
+                intS.pop();
+
             }
 
         }
